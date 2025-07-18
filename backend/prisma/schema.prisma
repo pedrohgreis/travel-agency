@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  bookings Booking[]
+
+  @@map("users")
+}
+
+model Destiny {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  image       String?
+  price       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  booking Booking[]
+
+  @@map("destinies")
+}
+
+model Booking {
+  id          String   @id @default(uuid())
+  bookingDate DateTime @default(now())
+  status      String   @default("PENDING")
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  destiny   Destiny @relation(fields: [destinyId], references: [id])
+  destinyId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  payments Payments[]
+
+  @@map("bookings")
+}
+
+model Payments {
+  id        String   @id @default(uuid())
+  amount    Float
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  bookingId String
+}
