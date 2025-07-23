@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 
 
 
-class UserRepository implements UserInterface {
+export class UserRepository implements UserInterface {
 
     async createUser(data: Prisma.UserCreateInput){
         const user = await prisma.user.create({
