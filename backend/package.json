@@ -5,7 +5,7 @@
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest --run",
     "build": "tsup src --out-dir build"
   },
   "keywords": [],
@@ -18,7 +18,8 @@
     "prisma": "6.11.1",
     "tsup": "^8.5.0",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "3.2.4"
   },
   "dependencies": {
     "@prisma/client": "6.11.1",

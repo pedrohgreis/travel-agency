@@ -2,7 +2,9 @@ import {UserRepository} from '@/repositories/prisma/userRepository'
 import { hash } from 'bcryptjs';
 import { UserAlreadyExistsError } from '../Errors/user-already-exists';
 
-class UserServiceRegister {
+
+
+export class UserServiceRegister {
     private user = new UserRepository();
 
     async register(data: {name:string, email: string, password:string}){
@@ -23,10 +25,14 @@ class UserServiceRegister {
         const password = await hash(data.password, 12);
 
         //* Save in the databases
-        await this.user.createUser({
+        const user = await this.user.createUser({
             name: name,
             email: email,
             password: password
         })
+
+        return{
+            user,
+        }
     }
 }
