@@ -6,13 +6,13 @@ export interface UserInterface{
     
     findUserById(id: string): Promise<User | null>;
     updateUser(id: string, data: Prisma.UserUpdateInput): Promise<User>;
-    deleteUser(id: string): Promise<User>;
+    deleteUser(id: string): Promise<User | null>;
 
     listUsers(): Promise<User[]>;
     listUsersPaginated(skip: number, take: number): Promise<User[]>;
     countUsers(): Promise<number>;
 
     searchUsersByName(keyword: string): Promise<User[]>;
-    changeUserPassword(id: string, newPassword: string): Promise<User>;
+    changeUserPassword(id: string, newPassword: string): Promise<User | null>;
 
 }
