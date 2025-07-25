@@ -1,17 +1,17 @@
 import {it, describe, expect, beforeEach} from "vitest";
 import { UserServiceRegister } from "../user/registerUser";
-import { InMemmoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository";
+import { InMemoryUsersRepository } from "../../repositories/in-memory/in-memory-users-repository"; 
 import { compare } from "bcryptjs";
 import { UserAlreadyExistsError } from "../Errors/user-already-exists";
 
 describe("Get Register", () => {
 
-    let userRepository: InMemmoryUsersRepository
+    let userRepository: InMemoryUsersRepository
     let sut: UserServiceRegister
 
     beforeEach(() => {
-        userRepository = new InMemmoryUsersRepository();
-        sut = new UserServiceRegister();
+        userRepository = new InMemoryUsersRepository();
+        sut = new UserServiceRegister(userRepository);
     })
 
     it("It hash password", async () => {
@@ -29,6 +29,12 @@ describe("Get Register", () => {
 
     it("It should not be able to register the same email twice", async () => {
         const email = "john@gmail.com";
+
+        await sut.register({
+                name: "Jhon",
+                email: email,
+                password: "123456"
+            })
 
         await expect(
             sut.register({

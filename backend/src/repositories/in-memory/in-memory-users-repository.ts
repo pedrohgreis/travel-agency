@@ -1,11 +1,11 @@
 import { Prisma, User } from "@/generated/prisma";
 import { UserRepository } from "../prisma/userRepository";
-import bcrypt from "bcryptjs/umd/types";
+import { hash } from "bcryptjs";
 
 // The in-memory user repository is mainly used for testing,
 // where we don't want to interact with a real database but simulate the behavior instead.
 
-export class InMemmoryUsersRepository implements UserRepository{
+export class InMemoryUsersRepository implements UserRepository{
     public items: User[] = []; // Used to store users in memory.
 
     private findUserBy<K extends keyof User>(key: K, value: User[K]): User | null {
@@ -91,7 +91,7 @@ export class InMemmoryUsersRepository implements UserRepository{
             throw new Error(`User with id ${id} not found`);
         }
 
-        const hashedPassword = await bcrypt.hash(newPassword,12);
+        const hashedPassword = await hash(newPassword,12);
         user.password = hashedPassword;
         
         return user;
